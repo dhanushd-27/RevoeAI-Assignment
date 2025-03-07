@@ -8,7 +8,7 @@ connectDB();
 const app = express();
 app.use(express.json())
 
-app.use('/', generalRouter)
+app.use('/', generalRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server Connected, http://localhost:${process.env.PORT}`)
