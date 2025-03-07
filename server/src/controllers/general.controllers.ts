@@ -1,10 +1,8 @@
 import { Request, Response } from "express"
-import { SheetSchema, UserSignInSchema, UserSignUpSchema } from "../types/index"
+import { UserSignInSchema, UserSignUpSchema } from "../types/index"
 import { UserModel } from "../models/users.model";
 import jwt from "jsonwebtoken"
 import argon2 from "argon2";
-import axios, { AxiosError } from "axios";
-import { extractSpreadsheetId } from "../utils";
 
 export const signUpController = async (req: Request, res: Response ) => {
   // Parse Data with Zod
@@ -94,7 +92,7 @@ export const signInController = async (req: Request, res: Response) => {
     const token = jwt.sign({
       email: isFound.email,
       id: isFound._id.toString()
-    }, process.env.JWT_SECRET as string, { expiresIn: "1m"});
+    }, process.env.JWT_SECRET as string, { expiresIn: "15s"});
 
     res.status(200).json({
       message: "User Logged In Successfully",
@@ -109,36 +107,9 @@ export const signInController = async (req: Request, res: Response) => {
   }
 }
 
-export const fetchData = async (req: Request, res: Response) => {
-  const parsedData = SheetSchema.safeParse(req.body);
-
-  if(!parsedData.success) {
-    res.status(403).json({
-      message: "Invalid Input Data"
-    })
-    return;
-  }
-
-  const spreadsheetId = extractSpreadsheetId(parsedData.data.link);
-
-  if(!spreadsheetId) {
-    res.status(403).json({
-      message: "Invalid Spreadsheet Link"
-    })
-    return;
-  }
-
-  try {
-    const response = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${parsedData.data.sheetName}?key=${process.env.GOOGLE_API_KEY}`);
-
-    res.status(200).json({
-      message: "Data Fetched Successfully",
-      data: response.data.values
-    })
-  } catch (error: any) {
-    res.status(400).json({
-      message: "Data Fetching Failed",
-      error: error,
-    });
-  }
+export const verifyController = (req: Request, res: Response) => {
+  res.status(200).json({
+    message: "User Verified",
+    email: req.user.email
+  })
 }
