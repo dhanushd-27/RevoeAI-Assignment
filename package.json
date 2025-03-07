@@ -19,10 +19,13 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
+    "@google-cloud/local-auth": "2.1.0",
     "argon2": "^0.41.1",
+    "axios": "^1.8.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "googleapis": "105",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
     "zod": "^3.24.2"
