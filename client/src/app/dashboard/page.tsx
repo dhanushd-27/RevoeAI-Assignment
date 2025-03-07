@@ -1,5 +1,6 @@
 import DialogButton from "@/components/add-table-button"
 import { AppSidebar } from "@/components/app-sidebar"
+import DataTable from "@/components/table"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,6 +16,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+
 
 export default function Page() {
   return (
@@ -47,7 +49,7 @@ export default function Page() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          
+          <DataTable />
         </div>
       </SidebarInset>
     </SidebarProvider>
