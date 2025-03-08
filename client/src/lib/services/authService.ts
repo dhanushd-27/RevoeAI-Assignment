@@ -19,3 +19,6 @@ export const signInService = async (data: SignInSchema) => {
   return await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/signin`, data, { withCredentials: true });
 }
 
+export const logoutUser = async () => {
+  return await axios.post(`${process.env.NEXT_PUBLIC_API_URI}/logout`, "",{ withCredentials: true });
+}
