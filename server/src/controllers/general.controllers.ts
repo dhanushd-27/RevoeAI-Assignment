@@ -100,6 +100,7 @@ export const signInController = async (req: Request, res: Response) => {
       httpOnly: true, 
       secure: false,  
       maxAge: 3600000,
+      path: "/",
     });
 
     res.status(200).json({
@@ -170,3 +171,15 @@ export const verifyUser = (req: Request, res: Response) => {
     });
   }
 }
+
+export const logoutUser = (req: Request, res: Response) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: false,
+    path: "/", // Ensure path matches the one used when setting the cookie
+  });
+
+  res.status(200).json({
+    message: "User Logged Out Successfully",
+  });
+};
