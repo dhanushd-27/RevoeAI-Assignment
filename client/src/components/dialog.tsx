@@ -5,11 +5,9 @@ import { Button } from './ui/button'
 import { Plus } from 'lucide-react'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
-import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
 import { setColNo } from '@/lib/store/columnNo/columnNoSlice'
 import { addColNames } from '@/lib/store/columnNames/columnNamesSlice'
-
 
 export default function DialogButton() {
   const numFields = useAppSelector(state => state.columnNo);
@@ -38,6 +36,22 @@ export default function DialogButton() {
               onChange={ (e) => { dispatch(setColNo(e.target.value))}} 
             />
           </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="sheetLink" className="text-right">
+                Sheet Link
+              </Label>
+
+              <Input id="sheetLink" type='text' placeholder="Enter Sheet Link" className="col-span-3"/>
+          </div>
+
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="sheetName" className="text-right">
+              Sheet Name
+            </Label>
+
+            <Input id="sheetName" type='text' placeholder="Enter Sheet Name" className="col-span-3"/>
+          </div>
+
           { Array.from({ length: numFields.value })
             .map((_, index) => (
             <div className="grid grid-cols-4 items-center gap-4" key={ index }>
@@ -55,7 +69,7 @@ export default function DialogButton() {
           }
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="submit" >Add Columns</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

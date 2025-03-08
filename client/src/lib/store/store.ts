@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import columnSlice from './columnNo/columnNoSlice'
-import columnNameSlice from './columnNames/columnNamesSlice'
+import columnSlice from './columnNo/columnNoSlice';
+import columnNameSlice from './columnNames/columnNamesSlice';
 
 export const store = configureStore({
   reducer: {
     columnNo: columnSlice,
-    columnNames: columnNameSlice
+    columnNames: columnNameSlice,
   }
 })
 

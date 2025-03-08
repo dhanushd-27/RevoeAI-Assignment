@@ -1,6 +1,8 @@
-import DialogButton from "@/components/add-table-button"
+"use client"
+
 import { AppSidebar } from "@/components/app-sidebar"
-import DataTable from "@/components/table"
+import DialogButton from "@/components/dialog"
+import DynamicTable from "@/components/table-cols"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -43,13 +45,13 @@ export default function Page() {
               </Breadcrumb>
             </div>
             <div className="flex gap-2">
-              <DialogButton/>
+              <DialogButton />
               <ModeToggle />
             </div>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <DataTable />
+          <DynamicTable data={[]} />
         </div>
       </SidebarInset>
     </SidebarProvider>

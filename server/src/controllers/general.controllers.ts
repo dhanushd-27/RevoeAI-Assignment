@@ -139,8 +139,7 @@ export const fetchData = async (req: Request, res: Response) => {
     const response = await axios.get(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${parsedData.data.sheetName}?key=${process.env.GOOGLE_API_KEY}`);
 
     res.status(200).json({
-      message: "Data Fetched Successfully",
-      data: response.data.values
+      values: response.data.values
     })
   } catch (error: any) {
     res.status(400).json({
@@ -176,7 +175,7 @@ export const logoutUser = (req: Request, res: Response) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: false,
-    path: "/", // Ensure path matches the one used when setting the cookie
+    path: "/", 
   });
 
   res.status(200).json({

@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 const SECRET_KEY = process.env.NEXT_PUBLIC_JWT_SECRET as string;
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method !== "GET") return res.status(405).end(); // Method Not Allowed
+    if (req.method !== "GET") return res.status(405).end();
 
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ error: "Unauthorized" });
