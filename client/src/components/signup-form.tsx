@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,11 +12,54 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import { signUpService } from "@/lib/services/authService"
+import { FormEvent, useState } from "react"
+import { toast } from 'react-hot-toast';
+import { useRouter } from "next/navigation"
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const router = useRouter();
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+  
+    const response = await signUpService({ 
+      name,
+      email,
+      password
+    });
+
+    if(response.status === 200){
+      const { message } = response.data as { message: string  };
+      toast.success(message, {
+        position: "bottom-right"
+      });
+
+      router.push('/signin')
+    } else if(response.status === 403){
+      const { message } = response.data as { message: string  };
+      toast.error(message, {
+        position: "bottom-right"
+      })
+    } else if(response.status === 409){
+      const { message } = response.data as { message: string };
+      toast.error(message, {
+        position: "bottom-right"
+      })
+    } else {
+      const { message } = response.data as { message: string };
+      toast.error(message, {
+        position: "bottom-right"
+      })
+    }
+  }  
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -28,12 +73,14 @@ export function SignUpForm({
           <form>
             <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="uname">Name</Label>
                 <Input
-                  id="name"
+                  id="uname"
                   type="text"
                   placeholder="James Gunn"
                   required
+                  value={ name }
+                  onChange={ (e) => setName(e.target.value) }
                 />
               </div>
               <div className="grid gap-2">
@@ -43,15 +90,23 @@ export function SignUpForm({
                   type="email"
                   placeholder="m@example.com"
                   required
+                  value={ email }
+                  onChange={ (e) => setEmail(e.target.value) }
                 />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Password</Label>
                 </div>
-                <Input id="password" type="password" required />
+                <Input 
+                  id="password" 
+                  type="password" 
+                  required 
+                  onChange={ (e) => setPassword(e.target.value) }
+                  value={ password }
+                />
               </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" onClick={ (e) => { handleSubmit(e) }}>
                 Sign Up
               </Button>
             </div>
