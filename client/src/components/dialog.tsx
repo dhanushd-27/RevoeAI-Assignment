@@ -6,24 +6,15 @@ import { Plus } from 'lucide-react'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { useState } from 'react'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks'
+import { setColNo } from '@/lib/store/columnNo/columnNoSlice'
+import { addColNames } from '@/lib/store/columnNames/columnNamesSlice'
 
 
 export default function DialogButton() {
-  const [numFields, setNumFields] = useState<number>(0);
-  const [columnCollection, setColumnCollection] = useState<string[]>([]);
-
-  const handleColumnCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const count = Math.max(0, parseInt(e.target.value) || 0);
-
-    setNumFields(count);
-    setColumnCollection(new Array(count).fill(""));
-  };
-
-  const handleColumnNameChange = (index: number, value: string) => {
-    const updatedColumns = [...columnCollection];
-    updatedColumns[index] = value;
-    setColumnCollection(updatedColumns);
-  };
+  const numFields = useAppSelector(state => state.columnNo);
+  const dispatch = useAppDispatch();
+  const columnCollection = useAppSelector(state => state.columnNames);
 
   return (
     <Dialog>
@@ -43,11 +34,11 @@ export default function DialogButton() {
               Column No.
             </Label>
             <Input 
-              id="name" type='number' placeholder="Enter No of Columns" className="col-span-3" value={ numFields } 
-              onChange={handleColumnCountChange} 
+              id="name" type='number' placeholder="Enter No of Columns" className="col-span-3" value={ numFields.value } 
+              onChange={ (e) => { dispatch(setColNo(e.target.value))}} 
             />
           </div>
-          { Array.from({ length: numFields })
+          { Array.from({ length: numFields.value })
             .map((_, index) => (
             <div className="grid grid-cols-4 items-center gap-4" key={ index }>
               <Label htmlFor="name" className="text-right">
@@ -55,8 +46,10 @@ export default function DialogButton() {
               </Label>
 
               <Input id="name" type='text' placeholder="Enter Column Name" className="col-span-3"
-              value={columnCollection[index] || ""} 
-              onChange={(e) => handleColumnNameChange(index, e.target.value)} />
+              value={columnCollection.value[index] || ""} 
+              onChange={(e) => { 
+                  dispatch(addColNames({ index, name: e.target.value }))
+                }} />
             </div>
             ))
           }
